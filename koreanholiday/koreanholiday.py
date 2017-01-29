@@ -5,11 +5,25 @@ from lunardate import LunarDate
 
 class Holiday:
 
-    HOLIDAYS_NAME = ['newyearsday', 'lunarnewyearsday', '']
+    HOLIDAYS_NAME = ['newyearsday', 'lunarnewyearsday', 'independencemovementday',
+                     'arborday', 'childrensday', 'buddhasbirthday',
+                     'memorialday', 'constitutionday', 'liberationday',
+                     'koreanthanksgivingday', 'nationalfoundationday', 'hangulday',
+                     'christmas']
+    DESCRIPTION = {
+        'en' : ["New Year's Day(Sinjeong)", "Lunar New Year's Day(Seolnal)", "Independence Movement Day(Samiljeol)",
+                "Korean Arbor Day(Sikmokil)", "Children's Day(Eorininal)", ],
+        'ko' : ['신정', '설날', '삼일절',
+                '식목일', '어린이날', '석가탄신일',
+                '현충일', '제헌절', '광복절',
+                '추석', '개천절', '한글날',
+                '크리스마스']
+        } 
 
-    def __init__(self, online=True, refresh=False):
+    def __init__(self, online=True, refresh=False, lang='en'):
         self.online = online
         self.timestamp = datetime.datetime.now()
+        self
 
         self._special = None
         self._holidays_except_alternative = {}
@@ -41,7 +55,7 @@ class Holiday:
         return date + datetime.timedelta(days=1)
 
     @staticmethod
-    def threeday(date):
+    def threedays(date):
         return [date - datetime.timedelta(days=1), date, date + datetime.timedelta(days=1)]
     
     def newyearsday(self, year=None, dayoff=False):
@@ -52,7 +66,7 @@ class Holiday:
         year = year if year else self.thisyear
         theday = LunarDate(year, 1, 1).toSolarDate()
         if dayoff:
-            return self.threeday(theday)
+            return self.threedays(theday)
         else:
             return theday
         
@@ -92,6 +106,27 @@ class Holiday:
     
     def liberationday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
+        return datetime.date(year, 8, 15)
+    
+    def koreanthanksgivingday(self, year=None, dayoff=False):
+        year = year if year else self.thisyear
+        theday = LunarDate(year, 8, 15).toSolarDate()
+        if dayoff:
+            return self.threedays(theday)
+        else:
+            return theday
+    
+    def nationalfoundationday(self, year=None, dayoff=False):
+        year = year if year else self.thisyear
+        return datetime.date(year, 10, 3)
+    
+    def hangulday(self, year=None, dayoff=False):
+        year = year if year else self.thisyear
+        return datetime.date(year, 10, 9)
+    
+    def christmas(self, year=None, dayoff=False):
+        year = year if year else self.thisyear
+        return datetime.date(year, 12, 25)
 
 
     #alternative holiday
