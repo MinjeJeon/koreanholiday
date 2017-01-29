@@ -3,6 +3,9 @@ import tempfile
 
 from lunardate import LunarDate
 
+# weekdays
+MON, TUE, WED, THU, FRI, SAT, SUN = range(7)
+
 
 class Holiday:
 
@@ -64,8 +67,22 @@ class Holiday:
         return [date - datetime.timedelta(days=1), date, date + datetime.timedelta(days=1)]
 
     def newyearsday(self, year=None, dayoff=False):
+        # 한국민속대백과사전 > 한국세시풍속사전 > 정월 > 양력세시
+        # http://folkency.nfm.go.kr/sesi/dic_index.jsp?P_MENU=04&DIC_ID=406&ref=T2&S_idx=41&P_INDEX=7&cur_page=1
         year = year if year else self.thisyear
-        return datetime.date(year, 1, 1)
+        theday = datetime.date(year, 1, 1)
+        if dayoff:
+            if 1950 <= year < 1991:
+                return [theday, theday + datetime.timedelta(days=1), theday + datetime.timedelta(days=2)]
+            elif 1991 <= year < 1999:
+                return [theday, theday + datetime.timedelta(days=1)]
+            elif 1999 <= year:
+                return theday
+        else:
+            if 1950 <= year:
+                return theday
+            else:
+                return None
 
     def lunarnewyearsday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
@@ -77,14 +94,19 @@ class Holiday:
 
     def independencemovementday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
-        return datetime.date(year, 3, 1)
+        theday = datetime.date(year, 3, 1)
+        if 1946 <= year:
+            return theday
+        else:
+            return None
 
     def arborday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
         theday = datetime.date(year, 4, 5)
-        if dayoff:
-            if 1948 <= year < 2006:
-                return theday
+        if 1948 <= year < 2006:
+            return theday
+        elif 2006 <= year:
+            return None
         else:
             return None
 
@@ -139,8 +161,21 @@ class Holiday:
 
     def holidays_before_substitution(self, year=None):
         year = year if year else self.thisyear
+        if year not in self._holidays_except_substitute:
+            self._holidays_except_substitute[year] = self._get_holidays_before_substitution(year)
+        return self._holidays_except_substitute[year]
 
-    def isworkday(self, date):
+    def _get_holidays_before_substitution(self, year=None):
+        dayoffs_raw = []
+        for hd in self.HOLIDAYS_NAME:
+            dayoff = getattr(self, hd)(year, dayoff=True)
+            if isinstance(dayoff, list):
+                dayoffs_raw.extend(dayoff)
+            else:
+                dayoffs_raw.append(dayoff)
+        return sorted(list(set([x for x in dayoffs_raw if x is not None])))
+
+    def isworkingday(self, date):
         pass
 
     def refresh(self, online=True):
