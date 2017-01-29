@@ -108,6 +108,8 @@ class Holiday:
                 return theday
             else:
                 return None
+        else:
+            return theday
 
     def liberationday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
