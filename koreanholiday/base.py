@@ -168,11 +168,18 @@ class Holiday:
             else:
                 return None
         else:
-            return theday
+            if 1950 <= year:
+                return theday
+            else:
+                return None
 
     def liberationday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
-        return datetime.date(year, 8, 15)
+        theday = datetime.date(year, 8, 15)
+        if 1950 <= year < 2008:
+            return theday
+        else:
+            return None
 
     def koreanthanksgiving(self, year=None, dayoff=False):
         year = year if year else self.thisyear
