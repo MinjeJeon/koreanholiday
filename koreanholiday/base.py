@@ -67,8 +67,6 @@ class Holiday:
         return [date - datetime.timedelta(days=1), date, date + datetime.timedelta(days=1)]
 
     def newyearsday(self, year=None, dayoff=False):
-        # 한국민속대백과사전 > 한국세시풍속사전 > 정월 > 양력세시
-        # http://folkency.nfm.go.kr/sesi/dic_index.jsp?P_MENU=04&DIC_ID=406&ref=T2&S_idx=41&P_INDEX=7&cur_page=1
         year = year if year else self.thisyear
         theday = datetime.date(year, 1, 1)
         if dayoff:
@@ -79,7 +77,7 @@ class Holiday:
             elif 1999 <= year:
                 return theday
         else:
-            if 1950 <= year:
+            if 1896 <= year:
                 return theday
             else:
                 return None
@@ -88,39 +86,78 @@ class Holiday:
         year = year if year else self.thisyear
         theday = LunarDate(year, 1, 1).toSolarDate()
         if dayoff:
-            return self.threedays(theday)
+            if 1985 <= year < 1989:
+                return theday
+            elif 1989 <= year:
+                return self.threedays(theday)
+            else:
+                return None
         else:
             return theday
+
 
     def independencemovementday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
         theday = datetime.date(year, 3, 1)
-        if 1946 <= year:
-            return theday
+        if dayoff:
+            if 1946 <= year:
+                return theday
+            else:
+                return None
         else:
-            return None
+            if 1920 <= year:
+                return theday
+            else:
+                return None
 
     def arborday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
         theday = datetime.date(year, 4, 5)
-        if 1948 <= year < 2006:
-            return theday
-        elif 2006 <= year:
-            return None
+        if dayoff:
+            if 1948 <= year < 2006:
+                return theday
+            elif 2006 <= year:
+                return None
+            else:
+                return None
         else:
-            return None
+            if 1946 <= year:
+                return theday
+            else:
+                return None
 
     def childrensday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
-        return datetime.date(year, 5, 5)
+        theday = datetime.date(year, 5, 5)
+        if dayoff:
+            if 1970 <= year:
+                return theday
+            else:
+                return None
+        else:
+            if 1946 <= year:
+                return theday
+            else:
+                return None
 
     def buddhasbirthday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
-        return LunarDate(year, 4, 8).toSolarDate()
+        theday = LunarDate(year, 4, 8).toSolarDate()
+        if dayoff:
+            if 1975 <= year:
+                return theday
+            else:
+                return None
+        else:
+            return theday
 
     def memorialday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
-        return datetime.date(year, 6, 6)
+        theday = datetime.date(year, 6, 6)
+        if 1956 <= year:
+            return theday
+        else:
+            return None
 
     def constitutionday(self, year=None, dayoff=False):
         year = year if year else self.thisyear

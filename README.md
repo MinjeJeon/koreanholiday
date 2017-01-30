@@ -8,6 +8,9 @@
 * 대통령 선거일, 임시 공휴일 등 주기가 일정하지 않은 공휴일에 대해 온라인 업데이트
 * 대체 공휴일제 반영
 
+## External Link
+[국립민속박물관 한국세시풍속사전](http://folkency.nfm.go.kr/sesi/index.jsp)
+
 ## English Translation
 
 We need English translator. If you want to join us, please [contact me](mailto:i@minje.kr)

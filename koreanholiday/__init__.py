@@ -1,4 +1,4 @@
-from .koreanholiday import Holiday
+from .base import Holiday
 
 __all__ = ['gong', 'Holiday']
 
