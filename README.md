@@ -10,6 +10,12 @@
 
 ## External Link
 [국립민속박물관 한국세시풍속사전](http://folkency.nfm.go.kr/sesi/index.jsp)
+[대한민국의 공휴일 > 역사](https://ko.wikipedia.org/wiki/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%EC%9D%98_%EA%B3%B5%ED%9C%B4%EC%9D%BC#.EC.97.AD.EC.82.AC)
+
+## TODO
+
+* 1959년의 대체공휴일제 반영
+* 각각의 공휴일 역사에 대한 원전 확보
 
 ## English Translation
 

@@ -176,7 +176,7 @@ class Holiday:
     def liberationday(self, year=None, dayoff=False):
         year = year if year else self.thisyear
         theday = datetime.date(year, 8, 15)
-        if 1950 <= year < 2008:
+        if 1950 <= year:
             return theday
         else:
             return None
