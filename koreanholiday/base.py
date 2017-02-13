@@ -3,7 +3,7 @@ import tempfile
 import locale
 
 from lunardate import LunarDate
-from collections import Iterable
+from collections import Iterable, defaultdict
 
 # weekdays
 MON, TUE, WED, THU, FRI, SAT, SUN = range(7)
@@ -40,9 +40,9 @@ class Holiday:
         self.timestamp = datetime.datetime.now()
 
         if lang is None:
-            lang = locale.getdefaultlocale()
+            lang, _ = locale.getdefaultlocale()
         try:
-            self.lang = self.LOCALE_MAP(lang)
+            self.lang = self.LOCALE_MAP[lang]
         except KeyError:
             self.lang = 'en'
 
@@ -226,21 +226,27 @@ class Holiday:
 
     # substitute holiday
 
-    def holidays_before_substitution(self, year=None):
+    def holidays_before_substitution(self, year=None, output='desc'):
         year = year if year else self.thisyear
         if year not in self._holidays_except_substitute:
             self._holidays_except_substitute[year] = self._get_holidays_before_substitution(year)
-        return self._holidays_except_substitute[year]
+        if output == 'name':
+            return self._holidays_except_substitute[year]
+        elif output == 'desc':
+            return {k: ', '.join([self.desc[i] for i in v]) for k, v in self._holidays_except_substitute[year].items()}
+        else:
+            return self._holidays_except_substitute[year]
 
     def _get_holidays_before_substitution(self, year=None):
-        dayoffs_raw = {}
+        dayoffs_res = defaultdict(list)
         for hd in self.HOLIDAYS_NAME:
             dayoff = getattr(self, hd)(year, dayoff=True, substitute=False)
-            if isinstance(dayoff, Iterable):
-                dayoffs_raw.extend(dayoff)
-            else:
-                dayoffs_raw.append(dayoff)
-        return sorted(list(set([x for x in dayoffs_raw if x is not None])))
+            if not isinstance(dayoff, Iterable):
+                dayoff = dayoff,
+            for x in dayoff:
+                if x is not None:
+                    dayoffs_res[x].append(hd)
+        return dayoffs_res
 
     def substitute(self, date):
         if not isinstance(date):
@@ -274,7 +280,8 @@ class Holiday:
                 return nextday
 
     def refresh(self, online=True):
-        pass
+        self._holidays_except_substitute = {}
+        self._holidays = {}
 
     def _get_special(self, online, refresh=None):
         if self.online:
@@ -284,6 +291,7 @@ class Holiday:
 
     def __getitem__(self, key):
         return self.holidays(key)
+
 
 def _holidays_with_desc():
     pass
