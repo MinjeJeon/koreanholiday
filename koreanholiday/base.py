@@ -233,7 +233,10 @@ class Holiday:
         if output == 'name':
             return self._holidays_except_substitute[year]
         elif output == 'desc':
-            return {k: ', '.join([self.desc[i] for i in v]) for k, v in self._holidays_except_substitute[year].items()}
+            return {
+                k: ', '.join([self.desc[i] for i in v])
+                for k, v in self._holidays_except_substitute[year].items()
+            }
         else:
             return self._holidays_except_substitute[year]
 
